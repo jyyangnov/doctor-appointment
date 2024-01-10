@@ -38,18 +38,21 @@ public class PatientController {
     public Result signup(@RequestBody Patient patient) {
         return patientService.signup(patient);
     }
+
     //登陆
     @PostMapping("/login")
-    public Result<Object> login(@RequestBody Patient patient) {
+    public Result login(@RequestBody Patient patient) {
         return patientService.login(patient);
     }
+
     //登出
     @PostMapping("/logout")
     public Result<Object> logout(@RequestBody CommonReq request) {
         return patientService.logout(request.getContext().getAccountId());
     }
+
     //@PostMapping("/makeAppointment")
-    //public Result<Object> makeAppointment(@RequestBody ) {
+    //public Result<Object> makeAppointment(@RequestBody CommonReq request) {
     //
     //}
 

@@ -1,13 +1,11 @@
 package com.yan.daserver.serviceHelper;
 
+import com.yan.daserver.entity.Appointment;
 import lombok.Data;
 
-public class PatientServiceHelper {
+import java.util.List;
 
-    @Data
-    public static class LogoutReqData {
-        private Integer patientId;
-    }
+public class DoctorServiceHelper {
 
     @Data
     public static class LoginResp {
@@ -21,5 +19,14 @@ public class PatientServiceHelper {
             this.role = role;
         }
     }
+
+    @Data
+    public static class GenerateAppointmentReq{
+        private Integer doctorId;
+        private List<Appointment> appointmentList;
+    }
+
+
+
 
 }

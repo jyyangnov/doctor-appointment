@@ -5,6 +5,7 @@ import com.yan.daserver.common.ResultStatus;
 import com.yan.daserver.common.Role;
 import com.yan.daserver.entity.Patient;
 import com.yan.daserver.mapper.PatientMapper;
+import com.yan.daserver.serviceHelper.PatientServiceHelper;
 import com.yan.daserver.serviceHelper.TokenServiceHelper;
 import lombok.Data;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,10 +22,14 @@ public class PatientService {
     @Autowired
     private TokenServiceHelper tokenServiceHelper;
 
+
+    //查看号码是否已存在
     public Boolean phoneExist(String phone) {
         return patientMapper.phoneExist(phone) != null;
     }
 
+
+    //注册
     public Result signup(Patient patient) {
         if(this.phoneExist(patient.getPhone())) {
             //号码已存在
@@ -35,23 +40,27 @@ public class PatientService {
         }
     }
 
-    public Result<Object> login(Patient patient) {
+
+    //登陆
+    public Result login(Patient patient) {
+        //未注册
         if (!this.phoneExist(patient.getPhone())) {
-            //未注册
             return new Result<>(ResultStatus.PHONE_NOT_EXIST_ERROR);
         }
         Patient loginPatient = patientMapper.getPatientByPhoneAndPassword(patient.getPhone(), patient.getPassword());
+        //密码错误
         if (loginPatient == null) {
-            //密码错误
             return new Result<>(ResultStatus.PHONE_NOT_EXIST_ERROR);
         }
         //登陆成功，返回token
         String token = tokenServiceHelper.createToken();
         tokenServiceHelper.saveToken(Role.PATIENT.toString() + loginPatient.getId(), token);
-        LoginData loginData = new LoginData(loginPatient.getId(), token, Role.PATIENT.toString());
-        return new Result<Object>(ResultStatus.SUCCESS, loginData);
+        PatientServiceHelper.LoginResp loginResp = new PatientServiceHelper.LoginResp(loginPatient.getId(), token, Role.PATIENT.toString());
+        return new Result<PatientServiceHelper.LoginResp>(ResultStatus.SUCCESS, loginResp);
     }
 
+
+    //退出登陆
     public Result<Object> logout(Integer accountId) {
         Boolean flag = tokenServiceHelper.deleteToken(Role.PATIENT.toString() + accountId.toString());
         if (flag) {
@@ -61,16 +70,6 @@ public class PatientService {
         }
     }
 
-    @Data
-    public static class LoginData {
-        public Integer accountId;
-        public String token;
-        public String role;
 
-        public LoginData(Integer accountId, String token, String role) {
-            this.accountId = accountId;
-            this.token = token;
-            this.role = role;
-        }
-    }
+
 }
