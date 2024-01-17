@@ -36,6 +36,11 @@ public class DoctorController {
     @PostMapping("/generateAppointment")
     public Result generateAppointment(@RequestBody CommonReq<DoctorServiceHelper.GenerateAppointmentReq> request) {
         return doctorService.generateAppointment(request.getData());
+    }
+
+    public Result changeStatus(@RequestBody CommonReq<DoctorServiceHelper.ChangeStatusReq> request) {
+        return doctorService.changeStatus(request.getData());
+    }
 
 
 

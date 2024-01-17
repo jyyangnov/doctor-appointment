@@ -3,17 +3,13 @@ package com.yan.daserver.controller;
 
 import com.yan.daserver.common.CommonReq;
 import com.yan.daserver.common.Result;
-import com.yan.daserver.common.ResultStatus;
 import com.yan.daserver.mapper.PatientMapper;
 import com.yan.daserver.entity.Patient;
 import com.yan.daserver.service.PatientService;
 import com.yan.daserver.serviceHelper.PatientServiceHelper;
-import io.swagger.models.auth.In;
-import org.apache.ibatis.jdbc.Null;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
 
 /**
  * <p>
@@ -49,6 +45,12 @@ public class PatientController {
     @PostMapping("/logout")
     public Result<Object> logout(@RequestBody CommonReq request) {
         return patientService.logout(request.getContext().getAccountId());
+    }
+
+    //挂号
+    @PostMapping("/makeAppointment")
+    public Result makeAppointment(@RequestBody CommonReq<PatientServiceHelper.MakeAppointmentReq> request) {
+        return patientService.makeAppointment(request.getData());
     }
 
     //@PostMapping("/makeAppointment")

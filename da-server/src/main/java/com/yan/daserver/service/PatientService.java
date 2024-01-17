@@ -70,6 +70,13 @@ public class PatientService {
         }
     }
 
-
-
+    //预约挂号
+    public Result makeAppointment(PatientServiceHelper.MakeAppointmentReq makeAppointmentReq) {
+        Integer flag = patientMapper.updateAppointmentById(makeAppointmentReq.getPatientId(), makeAppointmentReq.getAppointmentId());
+        if (flag == 1) {
+            return new Result(ResultStatus.SUCCESS);
+        } else {
+            return new Result(ResultStatus.APPOINTMENT_UPDATE_ERROR);
+        }
+    }
 }

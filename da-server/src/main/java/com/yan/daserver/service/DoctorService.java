@@ -74,14 +74,29 @@ public class DoctorService {
 
     //释放号源
     public Result generateAppointment(DoctorServiceHelper.GenerateAppointmentReq data) {
-
-
+        Integer doctorId = data.getDoctorId();
+        List<Appointment> appointmentList = data.getAppointmentList();
+        for (Appointment apt : appointmentList) {
+            apt.setDoctorId(doctorId);
+            apt.setStatus(0);
+        }
+        Integer num = doctorMapper.insertList(appointmentList);
+        if (num == appointmentList.size()) {
+            return new Result(ResultStatus.SUCCESS);
+        } else {
+            return new Result(ResultStatus.APPOINTMENT_INSERT_ERROR);
+        }
     }
 
 
-
-
-
+    public Result changeStatus(DoctorServiceHelper.ChangeStatusReq changeStatusReq) {
+        Integer flag = doctorMapper.updateStatusById(changeStatusReq.getAppointmentId(), changeStatusReq.getStatus());
+        if (flag == 1) {
+            return new Result(ResultStatus.SUCCESS);
+        } else {
+            return new Result(ResultStatus.STATUS_UPDATE_ERROR);
+        }
+    }
 }
 
 

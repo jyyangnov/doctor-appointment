@@ -1,6 +1,7 @@
 package com.yan.daserver.mapper;
 
 import com.yan.daserver.entity.Patient;
+import com.yan.daserver.serviceHelper.PatientServiceHelper;
 import org.apache.ibatis.annotations.Insert;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Select;
@@ -13,9 +14,6 @@ public interface PatientMapper {
 
     @Select("select * from patient where phone = #{phone} limit 1")
     Patient phoneExist(String phone);
-
-
-
 
     @Select("select * from patient")
     List<Patient> findAll();
@@ -33,4 +31,7 @@ public interface PatientMapper {
 
     @Select("select * from patient where phone = #{phone} and password = #{password} limit 1")
     Patient getPatientByPhoneAndPassword(String phone, String password);
+
+    @Update("update appointment set patient_id=#{patientId}, status=1 where appointment_id=#{appointmentId}")
+    Integer updateAppointmentById(Integer patientId, Integer appointmentId);
 }

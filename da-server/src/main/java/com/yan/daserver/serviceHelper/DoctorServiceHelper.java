@@ -1,6 +1,7 @@
 package com.yan.daserver.serviceHelper;
 
 import com.yan.daserver.entity.Appointment;
+import io.swagger.models.auth.In;
 import lombok.Data;
 
 import java.util.List;
@@ -27,6 +28,9 @@ public class DoctorServiceHelper {
     }
 
 
-
-
+    @Data
+    public static class ChangeStatusReq {
+        private Integer appointmentId;
+        private Integer status;
+    }
 }
